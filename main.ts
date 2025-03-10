@@ -1,0 +1,42 @@
+import { Bot } from "npm:@skyware/bot";
+import { Jetstream } from "npm:@skyware/jetstream";
+
+const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH");
+const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN");
+const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
+const BSKY_USERNAME = Deno.env.get("BSKY_USERNAME");
+const BSKY_PASSWORD = Deno.env.get("BSKY_PASSWORD");
+
+async function getAirtableRecords() {
+  return fetch(`https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`,
+    {headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}}
+  ).then(res=>res.json()).then(body=>body.records);
+}
+
+const airtableRecords = await getAirtableRecords();
+
+const didToPosts = new Map(
+  airtableRecords.map(record => [record.bluesky_did, record.post]));
+
+const jetstream = new Jetstream({
+  wantedCollections: ["app.bsky.feed.post"],
+  // TODO: Persistent timestamp cursor, for catching up after reboot?
+  wantedDids: airtableRecords.map(record => record.bluesky_did),
+  endpoint: JETSTREAM_ENDPOINT
+});
+
+const bot = new Bot();
+await bot.login({identifier: BSKY_USERNAME, password: BSKY_PASSWORD});
+
+jetstream.onCreate("app.bsky.feed.post", (op) => {
+  if (!op.commit.record.reply) {
+    const uri = `at://${op.did}/${op.commit.collection}/${op.commit.rkey}`;
+    const rootRef = {cid: op.commit.cid, uri};
+    bot.post({
+      text: didToPosts.get(op.did),
+      reply: {
+        root: rootRef, parent: rootRef
+      }
+    }).then(() => console.log(`${new Date().toISOString()} replied to ${uri}`));
+  }
+});
