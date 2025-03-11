@@ -1,18 +1,29 @@
 import { Bot } from "npm:@skyware/bot";
 import { Jetstream } from "npm:@skyware/jetstream";
 
-const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH");
-const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN");
+const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH")!;
+const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN")!;
 const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
-const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME");
-const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD");
+const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME")!;
+const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD")!;
 
 const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`;
 
+interface RepFields {
+  bluesky_did: string,
+  post: string,
+  url: string
+}
+
+interface AirtableResponse {
+  records: Array<{fields: RepFields}>,
+  offset?: string
+}
+
 async function getAirtableRecords() {
-  const records = [];
-  
-  let response = await fetch(airtableEndpoint, {
+  const records: Array<RepFields> = [];
+
+  let response: AirtableResponse = await fetch(airtableEndpoint, {
     headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
   }).then(res=>res.json());
   records.push(...response.records.map(record => record.fields));
@@ -48,9 +59,10 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
   if (!op.commit.record.reply) {
     const uri = `at://${op.did}/${op.commit.collection}/${op.commit.rkey}`;
     const rootRef = {cid: op.commit.cid, uri};
+    const repRecord = didToRecords.get(op.did)!;
     bot.post({
-      text: didToRecords.get(op.did).post,
-      external: didToRecords.get(op.did).url,
+      text: repRecord.post,
+      external: repRecord.url,
       replyRef: {
         root: rootRef, parent: rootRef
       }
