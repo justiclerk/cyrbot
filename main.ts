@@ -12,7 +12,7 @@ const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByF
 interface RepFields {
   bluesky_did: string,
   post: string,
-  url: string
+  url?: string
 }
 
 interface AirtableResponse {
