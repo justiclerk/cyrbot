@@ -62,7 +62,7 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
     const repRecord = didToRecords.get(op.did)!;
     bot.post({
       text: repRecord.post,
-      external: repRecord.url,
+      external: repRecord.url || undefined,
       replyRef: {
         root: rootRef, parent: rootRef
       }
