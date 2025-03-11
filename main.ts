@@ -7,10 +7,24 @@ const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME");
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD");
 
-function getAirtableRecords() {
-  return fetch(`https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`,
-    {headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}}
-  ).then(res=>res.json()).then(body => body.records.map(record => record.fields));
+const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`;
+
+async function getAirtableRecords() {
+  const records = [];
+  
+  let response = await fetch(airtableEndpoint, {
+    headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+  }).then(res=>res.json());
+  records.push(...response.records.map(record => record.fields));
+
+  while (response.offset) {
+    response = await fetch(airtableEndpoint + `&offset=${response.offset}`, {
+      headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+    }).then(res=>res.json());
+    records.push(...response.records.map(record => record.fields));
+  }
+
+  return records;
 }
 
 const airtableRecords = await getAirtableRecords();
