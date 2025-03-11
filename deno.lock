@@ -1,23 +1,10 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@std/assert@1": "1.0.11",
-    "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@skyware/bot@*": "0.3.8_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/bot@~0.3.8": "0.3.8_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/jetstream@*": "0.2.2",
     "npm:@skyware/jetstream@~0.2.2": "0.2.2"
-  },
-  "jsr": {
-    "@std/assert@1.0.11": {
-      "integrity": "2461ef3c368fe88bc60e186e7744a93112f16fd110022e113a0849e94d1c83c1",
-      "dependencies": [
-        "jsr:@std/internal"
-      ]
-    },
-    "@std/internal@1.0.5": {
-      "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
-    }
   },
   "npm": {
     "@atcute/bluesky-richtext-builder@1.0.2_@atcute+bluesky@1.0.14__@atcute+client@2.0.8_@atcute+client@2.0.8": {
@@ -133,7 +120,6 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1",
       "npm:@skyware/bot@~0.3.8",
       "npm:@skyware/jetstream@~0.2.2"
     ]
