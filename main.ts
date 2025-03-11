@@ -7,7 +7,7 @@ const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME");
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD");
 
-async function getAirtableRecords() {
+function getAirtableRecords() {
   return fetch(`https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`,
     {headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}}
   ).then(res=>res.json()).then(body => body.records.map(record => record.fields));
