@@ -60,6 +60,8 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
     const uri = `at://${op.did}/${op.commit.collection}/${op.commit.rkey}`;
     const rootRef = {cid: op.commit.cid, uri};
     const repRecord = didToRecords.get(op.did)!;
+
+    console.log(`post detected: ${uri}`)
     bot.post({
       text: repRecord.post,
       external: repRecord.url || undefined,
