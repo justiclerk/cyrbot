@@ -4,7 +4,7 @@ Bluesky automation for posting politicians' contact information. See it in actio
 
 ## Deploying
 
-cyrbot is designed to pull its backing data of accounts to monitor and reply to from an [Airtable](https://airtable.com/) with `bluesky_did` and `post` fields on each record (containing the [account DID](https://docs.bsky.app/docs/advanced-guides/resolving-identities) and post text to reply with, respectively). Any records in the table without a `bluesky_did` field will be safely ignored.
+cyrbot is designed to pull its backing data of accounts to monitor and reply to from an [Airtable](https://airtable.com/) with `bluesky_did`, `post`, and (optionally) `url` fields on each record (containing the [account DID](https://docs.bsky.app/docs/advanced-guides/resolving-identities), post text to reply with, and URL of the representative's website, respectively). Any records in the table without a `bluesky_did` field will be safely ignored.
 
 ## Configuring
 
