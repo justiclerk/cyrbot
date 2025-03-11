@@ -12,7 +12,6 @@ EnvironmentFile=/etc/cyrbot.env
 [Service]
 TimeoutStartSec=900
 Restart=always
-RuntimeMaxSec=24h
 
 [Install]
 WantedBy=multi-user.target default.target
