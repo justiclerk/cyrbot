@@ -19,3 +19,7 @@ cyrbot is configured with a few basic parameters defined in the process's [envir
 ## Deployment
 
 This automation is packaged as an OCI-compliant (Docker) container at `ghcr.io/justiclerk/cyrbot:main`. To run it on a Linux system with [Podman](https://podman.io/) installed, you can copy the unit file from `examples/cyrbot.container` in this repository to `/etc/containers/systemd`, then create a `/etc/cyrbot.env` with your corresponding deployment parameters as described in "Setup" above (it should wind up resembling `examples/cyrbot.env`). Once configured, running `systemctl daemon-reload && systemctl start cyrbot.service` as root (or restarting the system) should start the automation (check `journalctl -u cyrbot.service` for confirmation).
+
+## Forking
+
+The code powering cyrbot is released under a [CC0](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain dedication, waiving all legal intellectual-property claims such as copyright [to the greatest extent legally permissible](https://wiki.creativecommons.org/wiki/CC0_FAQ) under international law. Under these terms, anyone who wishes to copy and/or modify this code, for any purpose, may do so freely (consult the text of the `LICENSE` file for details).
