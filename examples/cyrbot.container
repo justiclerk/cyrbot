@@ -1,0 +1,16 @@
+[Unit]
+Description=Call Your Reps Bot
+After=network.target
+Requires=network.target
+
+[Container]
+Image=ghcr.io/justiclerk/cyrbot:main
+EnvironmentFile=/etc/cyrbot.env
+
+[Service]
+TimeoutStartSec=900
+Restart=always
+RuntimeMaxSec=24h
+
+[Install]
+WantedBy=multi-user.target default.target
