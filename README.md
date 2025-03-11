@@ -1,4 +1,4 @@
-# cyrbot
+# Call Your Reps Bot
 
 Bluesky automation for posting politicians' contact information. See it in action: [@callyourreps.us](https://bsky.app/profile/callyourreps.us)
 
