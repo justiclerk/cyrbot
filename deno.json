@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "build": "deno cache main.ts",
+    "build": "deno install",
     "start": "deno run --allow-net --allow-env main.ts"
   },
   "imports": {
