@@ -10,10 +10,12 @@ const BSKY_PASSWORD = Deno.env.get("BSKY_PASSWORD");
 async function getAirtableRecords() {
   return fetch(`https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`,
     {headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}}
-  ).then(res=>res.json()).then(body=>body.records);
+  ).then(res=>res.json()).then(body => body.records.map(record => record.fields));
 }
 
 const airtableRecords = await getAirtableRecords();
+
+console.log(`${airtableRecords.length} records successfully fetched from airtable`)
 
 const didToPosts = new Map(
   airtableRecords.map(record => [record.bluesky_did, record.post]));
@@ -34,9 +36,13 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
     const rootRef = {cid: op.commit.cid, uri};
     bot.post({
       text: didToPosts.get(op.did),
-      reply: {
+      replyRef: {
         root: rootRef, parent: rootRef
       }
-    }).then(() => console.log(`${new Date().toISOString()} replied to ${uri}`));
+    }).then(post => console.log(
+      `${new Date().toISOString()} replied to ${uri}: ${post.uri}`))
+      .catch(console.error);
   }
 });
+
+jetstream.start();
