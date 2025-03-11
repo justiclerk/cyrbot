@@ -5,6 +5,8 @@ Requires=network.target
 
 [Container]
 Image=ghcr.io/justiclerk/cyrbot:main
+Pull=newer
+AutoUpdate=registry
 EnvironmentFile=/etc/cyrbot.env
 
 [Service]
