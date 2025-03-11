@@ -40,8 +40,7 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
       replyRef: {
         root: rootRef, parent: rootRef
       }
-    }).then(post => console.log(
-      `${new Date().toISOString()} replied to ${uri}: ${post.uri}`))
+    }).then(post => console.log(`replied to ${uri}: ${post.uri}`))
       .catch(console.error);
   }
 });
