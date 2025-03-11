@@ -17,8 +17,8 @@ const airtableRecords = await getAirtableRecords();
 
 console.log(`${airtableRecords.length} records successfully fetched from airtable`)
 
-const didToPosts = new Map(
-  airtableRecords.map(record => [record.bluesky_did, record.post]));
+const didToRecords = new Map(
+  airtableRecords.map(record => [record.bluesky_did, record]));
 
 const jetstream = new Jetstream({
   wantedCollections: ["app.bsky.feed.post"],
@@ -35,7 +35,8 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
     const uri = `at://${op.did}/${op.commit.collection}/${op.commit.rkey}`;
     const rootRef = {cid: op.commit.cid, uri};
     bot.post({
-      text: didToPosts.get(op.did),
+      text: didToRecords.get(op.did).post,
+      external: didToRecords.get(op.did).url,
       replyRef: {
         root: rootRef, parent: rootRef
       }
