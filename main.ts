@@ -4,8 +4,8 @@ import { Jetstream } from "npm:@skyware/jetstream";
 const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH");
 const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN");
 const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
-const BSKY_USERNAME = Deno.env.get("BSKY_USERNAME");
-const BSKY_PASSWORD = Deno.env.get("BSKY_PASSWORD");
+const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME");
+const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD");
 
 async function getAirtableRecords() {
   return fetch(`https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`,
@@ -28,7 +28,7 @@ const jetstream = new Jetstream({
 });
 
 const bot = new Bot();
-await bot.login({identifier: BSKY_USERNAME, password: BSKY_PASSWORD});
+await bot.login({identifier: BLUESKY_USERNAME, password: BLUESKY_PASSWORD});
 
 jetstream.onCreate("app.bsky.feed.post", (op) => {
   if (!op.commit.record.reply) {
