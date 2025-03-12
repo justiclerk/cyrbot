@@ -5,6 +5,7 @@
   },
   "imports": {
     "@skyware/bot": "npm:@skyware/bot@^0.3.8",
-    "@skyware/jetstream": "npm:@skyware/jetstream@^0.2.2"
+    "@skyware/jetstream": "npm:@skyware/jetstream@^0.2.2",
+    "ms": "npm:ms@^2.1.3"
   }
 }

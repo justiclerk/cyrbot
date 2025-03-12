@@ -1,11 +1,13 @@
 import { Bot } from "npm:@skyware/bot";
 import { Jetstream } from "npm:@skyware/jetstream";
+import ms from "npm:ms";
 
 const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH")!;
 const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN")!;
 const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME")!;
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD")!;
+const REFRESH_INTERVAL = Deno.env.get("REFRESH_INTERVAL");
 
 const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`;
 
@@ -38,12 +40,22 @@ async function getAirtableRecords() {
   return records;
 }
 
-const airtableRecords = await getAirtableRecords();
+let airtableRecords: Array<RepFields> = [];
+let didToRecords: Map<string, RepFields>;
 
-console.log(`${airtableRecords.length} records successfully fetched from airtable`)
+async function updateAirtableRecords() {
+  airtableRecords = await getAirtableRecords();
 
-const didToRecords = new Map(
-  airtableRecords.map(record => [record.bluesky_did, record]));
+  console.log(`${airtableRecords.length} records successfully fetched from airtable`)
+
+  didToRecords = new Map(airtableRecords.map(record => [record.bluesky_did, record]));
+}
+
+console.log(`initializing records`)
+await updateAirtableRecords();
+
+const bot = new Bot();
+await bot.login({identifier: BLUESKY_USERNAME, password: BLUESKY_PASSWORD});
 
 const jetstream = new Jetstream({
   wantedCollections: ["app.bsky.feed.post"],
@@ -52,14 +64,12 @@ const jetstream = new Jetstream({
   endpoint: JETSTREAM_ENDPOINT
 });
 
-const bot = new Bot();
-await bot.login({identifier: BLUESKY_USERNAME, password: BLUESKY_PASSWORD});
-
 jetstream.onCreate("app.bsky.feed.post", (op) => {
-  if (!op.commit.record.reply) {
+  const repRecord = didToRecords.get(op.did);
+
+  if (repRecord && !op.commit.record.reply) {
     const uri = `at://${op.did}/${op.commit.collection}/${op.commit.rkey}`;
     const rootRef = {cid: op.commit.cid, uri};
-    const repRecord = didToRecords.get(op.did)!;
 
     console.log(`post detected: ${uri}`)
     bot.post({
@@ -88,3 +98,13 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
 });
 
 jetstream.start();
+
+async function refreshRecords() {
+  console.log(`${REFRESH_INTERVAL} passed, refreshing records`)
+  await updateAirtableRecords();
+  jetstream.updateOptions({wantedDids: airtableRecords.map(record => record.bluesky_did)});
+}
+
+if (REFRESH_INTERVAL) {
+  setInterval(refreshRecords, ms(REFRESH_INTERVAL));
+}

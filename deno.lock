@@ -4,7 +4,10 @@
     "npm:@skyware/bot@*": "0.3.8_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/bot@~0.3.8": "0.3.8_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/jetstream@*": "0.2.2",
-    "npm:@skyware/jetstream@~0.2.2": "0.2.2"
+    "npm:@skyware/jetstream@~0.2.2": "0.2.2",
+    "npm:@types/node@*": "22.12.0",
+    "npm:ms@*": "2.1.3",
+    "npm:ms@^2.1.3": "2.1.3"
   },
   "npm": {
     "@atcute/bluesky-richtext-builder@1.0.2_@atcute+bluesky@1.0.14__@atcute+client@2.0.8_@atcute+client@2.0.8": {
@@ -99,8 +102,17 @@
         "partysocket"
       ]
     },
+    "@types/node@22.12.0": {
+      "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
     "event-target-shim@6.0.2": {
       "integrity": "sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA=="
+    },
+    "ms@2.1.3": {
+      "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
     "partysocket@1.0.3": {
       "integrity": "sha512-7sSojS4oCRK1Fe1h+Sa0Za5dwOf+M9VksQlynD8yqwGpLvnO4oxx9ppmOSeh6CJTMbF5gbnvUQKMK525QSBdBw==",
@@ -114,6 +126,9 @@
     "rate-limit-threshold@0.1.5": {
       "integrity": "sha512-75vpvXC/ZqQJrFDp0dVtfoXZi8kxQP2eBuxVYFvGDfnHhcgE+ZG870u4ItQhWQh54Y6nNwOaaq5g3AL9n27lTg=="
     },
+    "undici-types@6.20.0": {
+      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
+    },
     "ws@8.18.1": {
       "integrity": "sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w=="
     }
@@ -121,7 +136,8 @@
   "workspace": {
     "dependencies": [
       "npm:@skyware/bot@~0.3.8",
-      "npm:@skyware/jetstream@~0.2.2"
+      "npm:@skyware/jetstream@~0.2.2",
+      "npm:ms@^2.1.3"
     ]
   }
 }
