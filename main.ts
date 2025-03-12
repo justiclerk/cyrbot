@@ -100,7 +100,7 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
 jetstream.start();
 
 async function refreshRecords() {
-  console.log(`${REFRESH_INTERVAL} passed, refreshing records`)
+  console.log(`${ms(ms(REFRESH_INTERVAL), {long: true})} passed, refreshing records`);
   await updateAirtableRecords();
   jetstream.updateOptions({wantedDids: airtableRecords.map(record => record.bluesky_did)});
 }
