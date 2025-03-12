@@ -15,6 +15,7 @@ cyrbot is configured with a few basic parameters defined in the process's [envir
 - `BLUESKY_USERNAME`: The handle (ie. `callyourreps.us`) of the Bluesky account to post from.
 - `BLUESKY_PASSWORD`: The password (an [app password](https://bsky.app/settings/app-passwords) is recommended) to use to log into the Bluesky account for posting.
 - `JETSTREAM_ENDPOINT` (optional): The [Jetstream](https://docs.bsky.app/blog/jetstream) endpoint to connect to for discovering new posts to reply to. If undefined, this will use the [@skyware/jetstream](https://skyware.js.org/docs/jetstream/types/JetstreamOptions/) default (`wss://jetstream1.us-east.bsky.network/subscribe`).
+- `REFRESH_INTERVAL` (optional): a length of time (in [ms](https://www.npmjs.com/package/ms)-compatible format) to wait before periodically refreshing records from Airtable. (If undefined, records will only be fetched on startup.)
 
 ## Deployment
 
