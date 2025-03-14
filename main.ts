@@ -81,9 +81,7 @@ jetstream.onCreate("app.bsky.feed.post", (op) => {
     }).catch(err => {
       console.error(err);
 
-      // workaround for:
-      // - https://github.com/skyware-js/bot/issues/26
-      // - https://github.com/skyware-js/bot/issues/27
+      // embeds have a history of being @skyware/bot's weak point
       console.log(`retrying reply to ${uri} without external embed`);
       return bot.post({
         text: repRecord.post,
