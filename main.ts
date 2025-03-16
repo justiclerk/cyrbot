@@ -4,7 +4,7 @@ import ms from "npm:ms";
 
 const AIRTABLE_BASE_ID = Deno.env.get("AIRTABLE_BASE_ID")!;
 const AIRTABLE_TABLE_ID = encodeURIComponent(Deno.env.get("AIRTABLE_TABLE_ID")!);
-const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN")!;
+const AIRTABLE_API_KEY = Deno.env.get("AIRTABLE_API_KEY")!;
 const AIRTABLE_ENDPOINT_URL = Deno.env.get("AIRTABLE_ENDPOINT_URL") || "https://api.airtable.com";
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME")!;
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD")!;
@@ -39,13 +39,13 @@ async function getAirtableRecords() {
 
   try {
     let response: AirtableResponse = await fetch(listRecordsBaseUrl, {
-      headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+      headers: {Authorization: `Bearer ${AIRTABLE_API_KEY}`}
     }).then(okJson);
     records.push(...response.records.map(record => record.fields));
 
     while (response.offset) {
       response = await fetch(listRecordsBaseUrl + `&offset=${response.offset}`, {
-        headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+        headers: {Authorization: `Bearer ${AIRTABLE_API_KEY}`}
       }).then(okJson);
       records.push(...response.records.map(record => record.fields));
     }

@@ -12,7 +12,7 @@ cyrbot is configured with a few basic parameters defined in the process's [envir
 
 - `AIRTABLE_BASE_ID`: The base ID for the table to fetch records from. This is a string that looks like `appJXQTKySpQuFGlJ`.
 - `AIRTABLE_TABLE_ID`: The ID (or name) of the table to fetch records from. This is a string that looks like `tblYaV8h440FTTNCs` (or the name of the table).
-- `AIRTABLE_TOKEN`: The [personal access token](https://airtable.com/developers/web/guides/personal-access-tokens) used to fetch the records. This is a string that looks like `patp2ypLmTyoppKmv.382ea2e6827d071ab16b08258699820d018f4b3661630aa904ad4d21e815a177`.
+- `AIRTABLE_API_KEY`: The [personal access token](https://airtable.com/developers/web/guides/personal-access-tokens) used to fetch the records. This is a string that looks like `patp2ypLmTyoppKmv.382ea2e6827d071ab16b08258699820d018f4b3661630aa904ad4d21e815a177`.
 - `AIRTABLE_ENDPOINT_URL` (optional): The endpoint to use for querying the Airtable API (`https://api.airtable.com` by default).
 - `BLUESKY_USERNAME`: The handle (ie. `callyourreps.us`) of the Bluesky account to post from.
 - `BLUESKY_PASSWORD`: The password (an [app password](https://bsky.app/settings/app-passwords) is recommended) to use to log into the Bluesky account for posting.
