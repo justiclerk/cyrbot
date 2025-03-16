@@ -2,14 +2,17 @@ import { Bot } from "npm:@skyware/bot";
 import { Jetstream } from "npm:@skyware/jetstream";
 import ms from "npm:ms";
 
-const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH")!;
-const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN")!;
-const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
+const AIRTABLE_BASE_ID = Deno.env.get("AIRTABLE_BASE_ID")!;
+const AIRTABLE_TABLE_ID = encodeURIComponent(Deno.env.get("AIRTABLE_TABLE_ID")!);
+const AIRTABLE_API_KEY = Deno.env.get("AIRTABLE_API_KEY")!;
+const AIRTABLE_ENDPOINT_URL = Deno.env.get("AIRTABLE_ENDPOINT_URL") || "https://api.airtable.com";
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME")!;
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD")!;
+const JETSTREAM_ENDPOINT_URL = Deno.env.get("JETSTREAM_ENDPOINT_URL");
 const REFRESH_INTERVAL = Deno.env.get("REFRESH_INTERVAL");
 
-const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`;
+const listRecordsBaseUrl = `${AIRTABLE_ENDPOINT_URL}/v0/${
+  AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}?filterByFormula=bluesky_did`;
 
 interface RepFields {
   bluesky_did: string,
@@ -35,14 +38,14 @@ async function getAirtableRecords() {
   const records: Array<RepFields> = [];
 
   try {
-    let response: AirtableResponse = await fetch(airtableEndpoint, {
-      headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+    let response: AirtableResponse = await fetch(listRecordsBaseUrl, {
+      headers: {Authorization: `Bearer ${AIRTABLE_API_KEY}`}
     }).then(okJson);
     records.push(...response.records.map(record => record.fields));
 
     while (response.offset) {
-      response = await fetch(airtableEndpoint + `&offset=${response.offset}`, {
-        headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+      response = await fetch(listRecordsBaseUrl + `&offset=${response.offset}`, {
+        headers: {Authorization: `Bearer ${AIRTABLE_API_KEY}`}
       }).then(okJson);
       records.push(...response.records.map(record => record.fields));
     }
@@ -74,7 +77,7 @@ const jetstream = new Jetstream({
   wantedCollections: ["app.bsky.feed.post"],
   // TODO: Persistent timestamp cursor, for catching up after reboot?
   wantedDids: airtableRecords.map(record => record.bluesky_did),
-  endpoint: JETSTREAM_ENDPOINT
+  endpoint: JETSTREAM_ENDPOINT_URL
 });
 
 jetstream.onCreate("app.bsky.feed.post", (op) => {
