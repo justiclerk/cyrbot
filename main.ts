@@ -2,14 +2,16 @@ import { Bot } from "npm:@skyware/bot";
 import { Jetstream } from "npm:@skyware/jetstream";
 import ms from "npm:ms";
 
-const AIRTABLE_PATH = Deno.env.get("AIRTABLE_PATH")!;
+const AIRTABLE_BASE_ID = Deno.env.get("AIRTABLE_BASE_ID")!;
+const AIRTABLE_TABLE_ID = encodeURIComponent(Deno.env.get("AIRTABLE_TABLE_ID")!);
 const AIRTABLE_TOKEN = Deno.env.get("AIRTABLE_TOKEN")!;
 const JETSTREAM_ENDPOINT = Deno.env.get("JETSTREAM_ENDPOINT");
 const BLUESKY_USERNAME = Deno.env.get("BLUESKY_USERNAME")!;
 const BLUESKY_PASSWORD = Deno.env.get("BLUESKY_PASSWORD")!;
 const REFRESH_INTERVAL = Deno.env.get("REFRESH_INTERVAL");
 
-const airtableEndpoint = `https://api.airtable.com/v0/${AIRTABLE_PATH}?filterByFormula=bluesky_did`;
+const airtableEndpoint =
+  `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}?filterByFormula=bluesky_did`;
 
 interface RepFields {
   bluesky_did: string,
