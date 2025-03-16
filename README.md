@@ -13,9 +13,10 @@ cyrbot is configured with a few basic parameters defined in the process's [envir
 - `AIRTABLE_BASE_ID`: The base ID for the table to fetch records from. This is a string that looks like `appJXQTKySpQuFGlJ`.
 - `AIRTABLE_TABLE_ID`: The ID (or name) of the table to fetch records from. This is a string that looks like `tblYaV8h440FTTNCs` (or the name of the table).
 - `AIRTABLE_TOKEN`: The [personal access token](https://airtable.com/developers/web/guides/personal-access-tokens) used to fetch the records. This is a string that looks like `patp2ypLmTyoppKmv.382ea2e6827d071ab16b08258699820d018f4b3661630aa904ad4d21e815a177`.
+- `AIRTABLE_ENDPOINT_URL` (optional): The endpoint to use for querying the Airtable API (`https://api.airtable.com` by default).
 - `BLUESKY_USERNAME`: The handle (ie. `callyourreps.us`) of the Bluesky account to post from.
 - `BLUESKY_PASSWORD`: The password (an [app password](https://bsky.app/settings/app-passwords) is recommended) to use to log into the Bluesky account for posting.
-- `JETSTREAM_ENDPOINT` (optional): The [Jetstream](https://docs.bsky.app/blog/jetstream) endpoint to connect to for discovering new posts to reply to. If undefined, this will use the [@skyware/jetstream](https://skyware.js.org/docs/jetstream/types/JetstreamOptions/) default (`wss://jetstream1.us-east.bsky.network/subscribe`).
+- `JETSTREAM_ENDPOINT_URL` (optional): The [Jetstream](https://docs.bsky.app/blog/jetstream) endpoint to connect to for discovering new posts to reply to. If undefined, this will use the [@skyware/jetstream](https://skyware.js.org/docs/jetstream/types/JetstreamOptions/) default (`wss://jetstream1.us-east.bsky.network/subscribe`).
 - `REFRESH_INTERVAL` (optional): a length of time (in [ms](https://www.npmjs.com/package/ms)-compatible format) to wait before periodically refreshing records from Airtable. (If undefined, records will only be fetched on startup.)
 
 ## Deployment
