@@ -22,31 +22,44 @@ interface AirtableResponse {
   offset?: string
 }
 
-async function getAirtableRecords() {
-  const records: Array<RepFields> = [];
-
-  let response: AirtableResponse = await fetch(airtableEndpoint, {
-    headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
-  }).then(res=>res.json());
-  records.push(...response.records.map(record => record.fields));
-
-  while (response.offset) {
-    response = await fetch(airtableEndpoint + `&offset=${response.offset}`, {
-      headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
-    }).then(res=>res.json());
-    records.push(...response.records.map(record => record.fields));
-  }
-
-  return records;
-}
-
 let airtableRecords: Array<RepFields> = [];
 let didToRecords: Map<string, RepFields>;
 
+// deno-lint-ignore no-explicit-any
+function okJson (res: Response): Promise<any> {
+  if (res.ok) return res.json();
+  else throw new Error(`response not ok: ${res.status} ${res.statusText}`);
+}
+
+async function getAirtableRecords() {
+  const records: Array<RepFields> = [];
+
+  try {
+    let response: AirtableResponse = await fetch(airtableEndpoint, {
+      headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+    }).then(okJson);
+    records.push(...response.records.map(record => record.fields));
+
+    while (response.offset) {
+      response = await fetch(airtableEndpoint + `&offset=${response.offset}`, {
+        headers: {Authorization: `Bearer ${AIRTABLE_TOKEN}`}
+      }).then(okJson);
+      records.push(...response.records.map(record => record.fields));
+    }
+  } catch (err) {
+    // if any fetch fails, report the error and reuse the previous records
+    console.error(`failure fetching records from airtable:`)
+    console.error(err);
+
+    return airtableRecords;
+  }
+
+  console.log(`${records.length} records successfully fetched from airtable`)
+  return records;
+}
+
 async function updateAirtableRecords() {
   airtableRecords = await getAirtableRecords();
-
-  console.log(`${airtableRecords.length} records successfully fetched from airtable`)
 
   didToRecords = new Map(airtableRecords.map(record => [record.bluesky_did, record]));
 }

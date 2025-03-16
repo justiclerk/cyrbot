@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "npm:@skyware/bot@*": "0.3.10_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/bot@~0.3.10": "0.3.10_@atcute+client@2.0.8_@atcute+bluesky@1.0.14__@atcute+client@2.0.8",
     "npm:@skyware/jetstream@*": "0.2.2",
     "npm:@skyware/jetstream@~0.2.2": "0.2.2",
