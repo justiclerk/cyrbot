@@ -1,6 +1,9 @@
 import { Bot } from "npm:@skyware/bot";
 import { Jetstream } from "npm:@skyware/jetstream";
+import packageInfo from "./deno.json" with { type: "json" };
 import ms from "npm:ms";
+
+console.log(`starting cyrbot ${packageInfo.version} (on Deno ${Deno.version.deno})`)
 
 const AIRTABLE_BASE_ID = Deno.env.get("AIRTABLE_BASE_ID")!;
 const AIRTABLE_TABLE_ID = encodeURIComponent(Deno.env.get("AIRTABLE_TABLE_ID")!);
