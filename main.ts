@@ -52,6 +52,7 @@ async function getAirtableRecords() {
     records.push(...response.records.map((record) => record.fields));
 
     while (response.offset) {
+      console.log(`fetching offset ${response.offset}...`);
       response = await fetch(
         listRecordsBaseUrl + `&offset=${response.offset}`,
         {
