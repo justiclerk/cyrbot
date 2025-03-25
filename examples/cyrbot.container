@@ -2,6 +2,8 @@
 Description=Call Your Reps Bot
 After=network.target
 Requires=network.target
+StartLimitIntervalSec=5m
+StartLimitBurst=5
 
 [Container]
 Image=ghcr.io/justiclerk/cyrbot:main
